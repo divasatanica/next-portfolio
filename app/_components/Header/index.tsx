@@ -1,3 +1,6 @@
+import { GitHubLogoIcon, LinkedInLogoIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
+import React, { ReactNode } from "react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -8,31 +11,34 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
-import React from "react";
+
 
 const profileLinks = [
   {
-    title: 'LinkedIn',
-    href: '/profile/linkedin',
-    description: '',
+    title: "LinkedIn",
+    href: "/profile/linkedin",
+    description: "",
+    icon: <LinkedInLogoIcon />,
   },
   {
-    title: 'Github',
-    href: '/profile/github',
-    description: '',
-  }
-]
+    title: "Github",
+    href: "https://github.com/divasatanica",
+    description: "",
+    icon: <GitHubLogoIcon />,
+    target: "_blank",
+  },
+];
 
 export function Header() {
   return (
     <div
-      className="fixed py-4 px-24"
+      className="fixed py-4 px-24 z-10"
       style={{
         top: 0,
         left: 0,
         width: "100vw",
         background: "hsl(var(--background) / .6)",
+        boxShadow: '0px 5px 50px 0 hsl(var(--foreground) / .05)'
       }}
     >
       <NavigationMenu>
@@ -53,6 +59,8 @@ export function Header() {
                     key={component.title}
                     title={component.title}
                     href={component.href}
+                    icon={component.icon}
+                    target={component.target}
                   >
                     {component.description}
                   </ListItem>
@@ -68,8 +76,8 @@ export function Header() {
 
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
+  React.ComponentPropsWithoutRef<"a"> & { icon?: ReactNode }
+>(({ className, title, children, icon, ...props }, ref) => {
   return (
     <li>
       <NavigationMenuLink asChild>
@@ -81,13 +89,16 @@ const ListItem = React.forwardRef<
           )}
           {...props}
         >
-          <div className="text-sm font-medium leading-none">{title}</div>
+          <div className="inline-flex items-center text-sm font-medium leading-none">
+            {icon}
+            <span className="ml-2">{title}</span>
+          </div>
           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
             {children}
           </p>
         </a>
       </NavigationMenuLink>
     </li>
-  )
-})
-ListItem.displayName = "ListItem"
+  );
+});
+ListItem.displayName = "ListItem";
