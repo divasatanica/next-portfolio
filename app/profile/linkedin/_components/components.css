@@ -1,0 +1,12 @@
+.experience-item_title::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  position: absolute;
+  background: hsl(var(--foreground) / .1);
+  left: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
