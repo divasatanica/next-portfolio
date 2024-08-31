@@ -1,3 +1,4 @@
+import { formatLogMessage } from "../utils";
 import { LixLinkedinProfileResponse } from "./types";
 
 export class LixAdapter {
@@ -7,8 +8,17 @@ export class LixAdapter {
     const encoded = encodeURIComponent(`https://linkedin.com/in/${name}`);
     const url = "https://api.lix-it.com/v1/person?profile_link=" + encoded;
 
-    const data = await fetch(url, { headers: { Authorization: this.apiKey }, next: { revalidate: 3600 * 24 }});
+    try {
+      const data = await fetch(url, { headers: { Authorization: this.apiKey }, next: { revalidate: 0 }});
 
-    return data.json();
+      if (!data.ok) {
+        throw new Error(`Status ${data.status}, Message: ${data.statusText}`);
+      }
+
+      return data.json();
+    } catch (e) {
+      console.error(...formatLogMessage('Fetch LinkedIn profile failed:', (e as any).message));
+      return {} as any;
+    }
   }
 }
