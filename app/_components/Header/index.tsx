@@ -38,7 +38,8 @@ export function Header() {
         left: 0,
         width: "100vw",
         background: "hsl(var(--background) / .6)",
-        boxShadow: '0px 5px 50px 0 hsl(var(--foreground) / .05)'
+        boxShadow: '0px 5px 50px 0 hsl(var(--foreground) / .05)',
+        backdropFilter: 'blur(8px)'
       }}
     >
       <NavigationMenu>
