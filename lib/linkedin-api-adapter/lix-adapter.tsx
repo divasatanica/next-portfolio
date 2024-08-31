@@ -9,7 +9,7 @@ export class LixAdapter {
     const url = "https://api.lix-it.com/v1/person?profile_link=" + encoded;
 
     try {
-      const data = await fetch(url, { headers: { Authorization: this.apiKey }, next: { revalidate: 0 }});
+      const data = await fetch(url, { headers: { Authorization: this.apiKey }, next: { revalidate: 3600 * 24 * 7 }});
 
       if (!data.ok) {
         throw new Error(`Status ${data.status}, Message: ${data.statusText}`);
