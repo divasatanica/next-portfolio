@@ -64,7 +64,7 @@ export default async function LinkedInProfile() {
               Education
             </ModuleTitle>
           </section>
-          {data.education.map((educationItem, index) => (
+          {data.education?.map((educationItem, index) => (
             <EducationItem key={index} data={educationItem} />
           ))}
         </section>
@@ -74,7 +74,7 @@ export default async function LinkedInProfile() {
               Career Experience
             </ModuleTitle>
           </section>
-          {data.experience.map((expItem, index) => (
+          {data.experience?.map((expItem, index) => (
             <ExperienceItem key={index} data={expItem} />
           ))}
         </section>

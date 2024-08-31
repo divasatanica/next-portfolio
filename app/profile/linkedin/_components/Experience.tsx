@@ -10,12 +10,6 @@ interface IExpListProps {
   data: StandardLinkedinProfileResponse["experience"];
 }
 
-export function ExperienceList(props: IExpListProps) {
-  const { data } = props;
-
-  return <div></div>;
-}
-
 export function ExperienceItem(props: IExpItemProps) {
   const { data } = props;
 
