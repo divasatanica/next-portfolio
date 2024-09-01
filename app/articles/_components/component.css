@@ -1,0 +1,7 @@
+.article-item_title {
+  transition: all 0.3s ease-in-out;
+}
+
+.article-item_title:hover {
+  border: 1px solid hsl(var(--foreground) /.4) !important;
+}
