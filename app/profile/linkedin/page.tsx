@@ -17,11 +17,11 @@ export default async function LinkedInProfile() {
 
   return (
     <div
-      className="grid w-full gap-6"
+      className="static md:grid w-full gap-6"
       style={{ gridTemplateColumns: "0.4fr 1fr" }}
     >
       <aside
-        className="rounded-md text-center flex flex-col items-center p-6"
+        className="mb-6 md:mb-0  rounded-md text-center flex flex-col items-center p-6"
         style={{
           border: "1px solid hsl(var(--secondary))",
           background: "hsl(var(--primary-foreground))",
