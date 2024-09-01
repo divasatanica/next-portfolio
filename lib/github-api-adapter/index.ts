@@ -3,11 +3,11 @@ import { Issue } from "./schema/issue";
 
 const client = new GithubOfficialAPIClient();
 
-async function ListIssue(repo: string, labels: string, page: number, pageSize = 10): Promise<Issue[]> {
+async function ListIssue(repo: string, labels: string, page: number, pageSize = 10): Promise<{ total_count: number; items: Issue[] }> {
   const res = await client.ListIssue(repo, labels, page, pageSize);
 
   if (!res) {
-    return [];
+    return { total_count: 0, items: [] };
   }
 
   return await res.json();

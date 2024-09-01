@@ -25,3 +25,11 @@ export async function request(...params: Parameters<typeof fetch>) {
     return res;
   }
 }
+
+export function calculatePagination(totalNumber: number, pageSize: number) {
+  const totalPage = Math.ceil(totalNumber / pageSize);
+
+  return {
+    totalPage,
+  }
+}

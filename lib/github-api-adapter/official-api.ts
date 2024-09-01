@@ -22,7 +22,7 @@ export class GithubOfficialAPIClient {
   }
 
   async ListIssue(repo: string, labels: string, page: number, pageSize = 10) {
-    const res = await request(`${this.baseURL}/repos/${this.currentUserName}/${repo}/issues?page=${page}&per_page=${pageSize}&labels=${labels}`, {
+    const res = await request(`${this.baseURL}/search/issues?q=repo:${this.currentUserName}/${repo}+is:issue+label:${labels}&page=${page}&per_page=${pageSize}`, {
       headers: {
         ...this.getCommonHeaders('application/vnd.github.text+json')
       },
