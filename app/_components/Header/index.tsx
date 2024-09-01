@@ -52,6 +52,13 @@ export function Header() {
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
+            <Link href="/articles/1" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Articles
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
             <NavigationMenuTrigger>About Me</NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid w-[200px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[400px] ">

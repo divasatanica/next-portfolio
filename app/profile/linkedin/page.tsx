@@ -17,7 +17,7 @@ export default async function LinkedInProfile() {
 
   return (
     <div
-      className="grid w-full px-24 gap-6 py-8"
+      className="grid w-full gap-6"
       style={{ gridTemplateColumns: "0.4fr 1fr" }}
     >
       <aside
