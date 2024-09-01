@@ -32,7 +32,7 @@ const profileLinks = [
 export function Header() {
   return (
     <div
-      className="fixed py-4 px-24 z-10"
+      className="fixed py-4 px-4 sm:px-8 md:px-16 lg:px-24 z-10"
       style={{
         top: 0,
         left: 0,
