@@ -16,7 +16,7 @@ const HomepageCardItem = (props: PropsWithChildren<{ title: ReactNode; content: 
 export function HomepageCard(props: CommonProps) {
   const { user } = props;
   const joinDate = useMemo(() => formateDate(user.created_at), [user.created_at]);
-  return <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-10">
+  return <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-10">
     <HomepageCardItem title="Repos:" content={user.public_repos} />
     <HomepageCardItem title="Gists:" content={user.public_gists} />
     <HomepageCardItem title="Followers:" content={user.followers} />
