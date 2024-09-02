@@ -43,5 +43,15 @@ export class GithubOfficialAPIClient {
 
     return res;
   }
+
+  async GetUser() {
+    const res = await request(`${this.baseURL}/user`, {
+      headers: {
+        ...this.getCommonHeaders('application/vnd.github+json')
+      }
+    });
+
+    return res;
+  }
 }
 

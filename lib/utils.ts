@@ -9,6 +9,12 @@ export function formatLogMessage(...messages: any[]) {
   return ['[portfolio]', ...messages];
 }
 
+export function formateDate(rawDate: string) {
+  const date = new Date(rawDate);
+
+  return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+}
+
 export async function request(...params: Parameters<typeof fetch>) {
   let res: Response | null = null;
   try {

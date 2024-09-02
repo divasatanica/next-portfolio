@@ -1,6 +1,7 @@
 import { Avatar } from "@/app/_components/Avatar";
 import { Box } from "@/app/_components/Box";
 import { GithubAPI } from "@/lib/github-api-adapter";
+import { formateDate } from "@/lib/utils";
 import { useMemo } from "react";
 
 const REPO_NAME = process.env.GITHUB_ISSUE_SOURCE_REPO || "text-materials";
@@ -12,16 +13,13 @@ export default async function ArticlePage({
 }) {
   const { id } = params;
   const article = await GithubAPI.GetIssue(REPO_NAME, id);
-  const date = new Date(article.created_at);
-  const createDate = `${date.getFullYear()}/${
-    date.getMonth() + 1
-  }/${date.getDate()}`;
+  const createDate = formateDate(article.created_at);
 
   return (
     <div>
       <header className="mb-6">
         <p>
-          <span className="text-[24px] font-medium text-slate-800">{article.title}</span>
+          <span className="text-2xl font-medium text-slate-800">{article.title}</span>
         </p>
 
         <p className="text-slate-500 inline-flex items-center">

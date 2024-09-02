@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { Avatar } from "@/app/_components/Avatar";
 import Link from "next/link";
 import { GITHUB_ROOT_LABEL } from "@/lib/constants";
+import { formateDate } from "@/lib/utils";
 
 interface IProps {
   issue: Issue;
@@ -13,9 +14,7 @@ interface IProps {
 export function ArticleItem(props: IProps) {
   const { issue } = props;
   const createDate = useMemo(() => {
-    const date = new Date(issue.created_at);
-
-    return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+    return formateDate(issue.created_at);
   }, [issue.created_at]);
 
   return (
@@ -23,7 +22,7 @@ export function ArticleItem(props: IProps) {
       <Link href={`/articles/item/${issue.number}`}>
         <article className="">
           <p className="mb-2">
-            <span className="text-[20px] font-medium">{issue.title}</span>
+            <span className="text-xl font-medium">{issue.title}</span>
           </p>
           <main>
             <span className="text-slate-500">
