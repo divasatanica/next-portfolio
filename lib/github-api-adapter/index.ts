@@ -1,5 +1,6 @@
 import { GithubOfficialAPIClient } from "./official-api";
 import { Issue } from "./schema/issue";
+import { GithubUser } from "./schema/user";
 
 const client = new GithubOfficialAPIClient();
 
@@ -23,6 +24,16 @@ async function GetIssue(repo: string, id: string): Promise<Issue> {
   return await res.json();
 }
 
+async function GetUser(): Promise<GithubUser> {
+  const res = await client.GetUser();
+
+  if (!res) {
+    return {} as any;
+  }
+
+  return await res.json();
+}
+
 function _getInstance() {
   return client;
 }
@@ -31,4 +42,5 @@ export const GithubAPI = {
   _getInstance,
   ListIssue,
   GetIssue,
+  GetUser,
 }
