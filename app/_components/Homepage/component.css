@@ -1,0 +1,29 @@
+.homepage-bio__avatar {
+  animation: FadeIn 1s;
+}
+
+.homepage-bio__title {
+  animation: FadeIn 1.5s;
+}
+
+.homepage-card_item{
+  animation: FadeIn 1.5s;
+}
+
+
+@keyframes FadeIn {
+  0% {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+
+  90% {
+    transform: translateY(-1px);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

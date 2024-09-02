@@ -9,7 +9,7 @@ export const ModuleTitle: FC<IProps> = (props) => {
   const { children, icon } = props;
 
   return (
-    <h2 className="text-[24px] text-left flex items-center">
+    <h2 className="text-2xl text-left flex items-center">
       {icon}
       <span className="ml-2">{children}</span>
     </h2>

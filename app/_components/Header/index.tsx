@@ -20,13 +20,6 @@ const profileLinks = [
     description: "",
     icon: <LinkedInLogoIcon />,
   },
-  {
-    title: "Github",
-    href: "https://github.com/divasatanica",
-    description: "",
-    icon: <GitHubLogoIcon />,
-    target: "_blank",
-  },
 ];
 
 export function Header() {
@@ -61,14 +54,13 @@ export function Header() {
           <NavigationMenuItem>
             <NavigationMenuTrigger>About Me</NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul className="grid w-[200px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[400px] ">
+              <ul className="grid w-[160px] gap-3 p-4">
                 {profileLinks.map((component) => (
                   <ListItem
                     key={component.title}
                     title={component.title}
                     href={component.href}
                     icon={component.icon}
-                    target={component.target}
                   >
                     {component.description}
                   </ListItem>
@@ -92,7 +84,7 @@ const ListItem = React.forwardRef<
         <a
           ref={ref}
           className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            "inline-flex items-center w-full select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
             className
           )}
           {...props}
