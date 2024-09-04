@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 
-
 const profileLinks = [
   {
     title: "LinkedIn",
@@ -31,8 +30,8 @@ export function Header() {
         left: 0,
         width: "100vw",
         background: "hsl(var(--background) / .6)",
-        boxShadow: '0px 5px 50px 0 hsl(var(--foreground) / .05)',
-        backdropFilter: 'blur(8px)'
+        boxShadow: "0px 5px 50px 0 hsl(var(--foreground) / .05)",
+        backdropFilter: "blur(8px)",
       }}
     >
       <NavigationMenu>
@@ -48,6 +47,13 @@ export function Header() {
             <Link href="/articles/1" legacyBehavior passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                 Articles
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <Link href="/showcase/1" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Showcase
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
