@@ -1,6 +1,6 @@
 import { GithubAPI } from "@/lib/github-api-adapter";
-import { ArticleItem } from "../_components/ArticleItem";
-import { GITHUB_REPO_NAME, GITHUB_ROOT_LABEL } from "@/lib/constants";
+import { ShowcaseItem } from "../_components/ShowcaseItem";
+import { GITHUB_REPO_NAME, GITHUB_ROOT_LABEL, GITHUB_SHOWCASE_LABEL } from "@/lib/constants";
 import {
   Pagination,
   PaginationContent,
@@ -22,7 +22,7 @@ export default async function ArticlePage({
   const pageSize = 10;
   const articleObject = await GithubAPI.ListIssue(
     GITHUB_REPO_NAME,
-    GITHUB_ROOT_LABEL,
+    GITHUB_SHOWCASE_LABEL,
     current || 1,
     pageSize
   );
@@ -31,7 +31,7 @@ export default async function ArticlePage({
   if (!Array.isArray(articles)) {
     return (
       <div>
-        <p>Oops...Articles are gone</p>
+        <p>Oops...Showcase items are gone</p>
       </div>
     );
   }
@@ -41,19 +41,19 @@ export default async function ArticlePage({
   return (
     <div>
       {(articles || []).map((article) => {
-        return <ArticleItem issue={article} key={article.id} />;
+        return <ShowcaseItem issue={article} key={article.id} />;
       })}
       {totalPage === 1 ? null : (
         <Pagination>
           <PaginationContent>
             {current - 1 > 0 ? (
               <PaginationItem>
-                <PaginationPrevious href={`/articles/${current - 1}`} />
+                <PaginationPrevious href={`/showcase/${current - 1}`} />
               </PaginationItem>
             ) : null}
             {current - 1 > 0 ? (
               <PaginationItem>
-                <PaginationLink href={`/articles/${current - 1}`}>
+                <PaginationLink href={`/showcase/${current - 1}`}>
                   {current - 1}
                 </PaginationLink>
               </PaginationItem>
@@ -65,14 +65,14 @@ export default async function ArticlePage({
             </PaginationItem>
             {current + 1 <= totalPage ? (
               <PaginationItem>
-                <PaginationLink href={`/articles/${current + 1}`}>
+                <PaginationLink href={`/showcase/${current + 1}`}>
                   {current + 1}
                 </PaginationLink>
               </PaginationItem>
             ) : null}
             {current < totalPage ? (
               <PaginationItem>
-                <PaginationNext href={`/articles/${current + 1}`} />
+                <PaginationNext href={`/showcase/${current + 1}`} />
               </PaginationItem>
             ) : null}
           </PaginationContent>
