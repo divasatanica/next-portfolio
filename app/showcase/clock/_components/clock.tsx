@@ -1,7 +1,21 @@
 "use client";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { TimeScale } from "./number";
 import { MsTimeScale } from "./ms-number";
+import { ClockNeedle, MsClockNeedle } from "./clock-needle";
+
+const throttle = (fn: (...params: any[]) => any, delay: number) => {
+  let lastTriggered = -1;
+  return function(...params: Parameters<typeof fn>) {
+    const now = Date.now();
+
+    if (now - lastTriggered < delay) {
+      return;
+    }
+
+    fn(...params);
+  }
+};
 
 const paddingZero = (v: number, digit = 2) => {
   if (v < 10 ** (digit - 1)) {
@@ -51,108 +65,85 @@ export function Clock() {
       cancelAnimationFrame(rafRef.current);
     };
   }, []);
+  const [clockWidth, setClockWidth] = useState<{ clock: number; msClock: number; width: number; msTop: number }>({ clock: 250, msClock: 50, width: 0, msTop: 300 });
+  useLayoutEffect(() => {
+    const handler = throttle(() => {
+      switch (true) {
+        case window.innerWidth <= 640: {
+          setClockWidth(prev => {
+            if (prev.width <= 640 && prev.width !== 0) {
+              return prev;
+            }
 
+            return {
+              width: window.innerWidth,
+              clock: 125,
+              msClock: 25,
+              msTop: 150,
+            };
+          });
+          break;
+        }
+        case window.innerWidth <= 768: {
+          setClockWidth(prev => {
+            if (prev.width <= 768 && prev.width > 640) {
+              return prev;
+            }
+
+            return {
+              width: window.innerWidth,
+              clock: 175,
+              msClock: 40,
+              msTop: 200,
+            };
+          });
+          break;
+        }
+        default: {
+          setClockWidth(prev => {
+            if (prev.width > 768) {
+              return prev;
+            }
+
+            return {
+              width: window.innerWidth,
+              clock: 250,
+              msClock: 50,
+              msTop: 300,
+            };
+          });
+          break;
+        }
+      }
+    }, 100);
+
+    window.addEventListener('resize', handler);
+    handler();
+
+    return () => {
+      window.removeEventListener('resize', handler);
+    };
+  }, []);
+  
   return (
     <div className="bg-black p-4 rounded-[64px]">
       <div
-        className="relative w-[500px] h-[500px] rounded-full bg-white"
+        className="relative w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] md:w-[500px] md:h-[500px] rounded-full bg-white"
         style={{ boxShadow: "inset 0px 0px 15px 0 hsl(var(--foreground) /.9)" }}
       >
-        <TimeScale radius={250} />
+        <TimeScale radius={clockWidth.clock} />
+        <ClockNeedle hourAngle={hourAngle} minAngle={minAngle} secAngle={secAngle} radius={clockWidth.clock} />
         <div
-          className="absolute w-[10px] h-[10px] rounded-full box-border z-10"
-          style={{
-            left: "50%",
-            top: "50%",
-            transform: "translate(-50%, -50%)",
-            border: "2px solid hsl(var(--foreground))",
-          }}
-        >
-          <div
-            className="absolute w-[10px] h-[10px] rounded-full bg-black box-border z-10"
-            style={{
-              left: "50%",
-              top: "50%",
-              transform: "translate(-50%, -50%)",
-            }}
-          />
-          <div
-            className="hour-needle absolute w-[6px] h-[300px]"
-            style={{
-              left: 0,
-              top: -147,
-              background:
-                "linear-gradient(0deg, transparent 0%, transparent 50%, #4278f7 50%)",
-              transform: `rotate(${hourAngle}deg)`,
-              borderTopLeftRadius: 4,
-              borderTopRightRadius: 4,
-            }}
-          ></div>
-          <div
-            className="min-needle absolute w-[6px] h-[370px] "
-            style={{
-              left: 0,
-              top: -182,
-              background:
-                "linear-gradient(0deg, transparent 0%, transparent 50%, black 50%)",
-              transform: `rotate(${minAngle}deg)`,
-              borderTopLeftRadius: 4,
-              borderTopRightRadius: 4,
-            }}
-          ></div>
-          <div
-            className="sec-needle absolute w-[6px] h-[482px] "
-            style={{
-              left: 0,
-              top: -237,
-              background:
-                "linear-gradient(0deg, transparent 0%, transparent 50%, #f2a33c 50%)",
-              transform: `rotate(${secAngle}deg)`,
-              borderTopLeftRadius: 4,
-              borderTopRightRadius: 4,
-            }}
-          ></div>
-        </div>
-        <div
-          className="absolute w-[100px] h-[100px] rounded-full box-border bg-slate-300"
+          className="absolute w-[50px] h-[50px] sm:w-[80px] sm:h-[80px] md:w-[100px] md:h-[100px] rounded-full box-border bg-slate-300"
           style={{
             left: "50%",
             transform: "translateX(-50%)",
-            top: 300,
+            top: clockWidth.msTop,
             boxShadow: "inset 0px 0px 10px 0 hsl(var(--foreground) /.2)",
           }}
         >
-          <MsTimeScale radius={50} />
-          <div
-            className="absolute w-[10px] h-[10px] rounded-full bg-white box-border"
-            style={{
-              left: "50%",
-              top: "50%",
-              transform: "translate(-50%, -50%)",
-              border: "2px solid hsl(var(--background))",
-            }}
-          >
-            <div
-              className="msec-needle absolute w-[6px] h-[90px] "
-              style={{
-                left: 0,
-                top: -43,
-                background:
-                  "linear-gradient(0deg, transparent 0%, transparent 50%, white 50%)",
-                transform: `rotate(${mSecAngle}deg)`,
-                borderTopLeftRadius: 4,
-                borderTopRightRadius: 4,
-              }}
-            ></div>
-          </div>
-        </div>
-        <div
-          className="absolute"
-          style={{ left: "50%", transform: "translateX(-50%)", top: 420 }}
-        >
-          <span className="text-slate-700 text-2xl">
-            {paddingZero(hour)}:{paddingZero(min)}:{paddingZero(sec)}
-          </span>
+          <MsTimeScale radius={clockWidth.msClock} />
+          <MsClockNeedle radius={clockWidth.msClock} mSecAngle={mSecAngle} />
         </div>
       </div>
     </div>
