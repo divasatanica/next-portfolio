@@ -17,20 +17,21 @@ const throttle = (fn: (...params: any[]) => any, delay: number) => {
   }
 };
 
-const paddingZero = (v: number, digit = 2) => {
-  if (v < 10 ** (digit - 1)) {
-    return `${"0".repeat(digit - 1)}${v}`;
-  }
+type ClockSize = 's' | 'm' | 'l';
 
-  return `${v}`;
-};
+interface IProps {
+  needMs?: boolean;
+  size?: ClockSize;
+}
 
-export function Clock() {
+export function Clock(props: IProps) {
+  const { needMs = true, size: _size } = props;
   const [hour, setHour] = useState<number>(0);
   const [min, setMin] = useState<number>(0);
   const [sec, setSec] = useState<number>(0);
   const [mSec, setMSec] = useState<number>(0);
   const rafRef = useRef<number>(0);
+  const [size, setSize] = useState<ClockSize>(_size || 'l');
 
   const hourAngle = useMemo(() => {
     const _hour = hour % 12;
@@ -65,53 +66,22 @@ export function Clock() {
       cancelAnimationFrame(rafRef.current);
     };
   }, []);
-  const [clockWidth, setClockWidth] = useState<{ clock: number; msClock: number; width: number; msTop: number }>({ clock: 250, msClock: 50, width: 0, msTop: 300 });
   useLayoutEffect(() => {
+    if (_size != null) {
+      return;
+    }
     const handler = throttle(() => {
       switch (true) {
         case window.innerWidth <= 640: {
-          setClockWidth(prev => {
-            if (prev.width <= 640 && prev.width !== 0) {
-              return prev;
-            }
-
-            return {
-              width: window.innerWidth,
-              clock: 125,
-              msClock: 25,
-              msTop: 150,
-            };
-          });
+          setSize('s');
           break;
         }
         case window.innerWidth <= 768: {
-          setClockWidth(prev => {
-            if (prev.width <= 768 && prev.width > 640) {
-              return prev;
-            }
-
-            return {
-              width: window.innerWidth,
-              clock: 175,
-              msClock: 40,
-              msTop: 200,
-            };
-          });
+          setSize('m');
           break;
         }
         default: {
-          setClockWidth(prev => {
-            if (prev.width > 768) {
-              return prev;
-            }
-
-            return {
-              width: window.innerWidth,
-              clock: 250,
-              msClock: 50,
-              msTop: 300,
-            };
-          });
+          setSize('l');
           break;
         }
       }
@@ -121,19 +91,59 @@ export function Clock() {
     handler();
 
     return () => {
+      if (_size != null) {
+        return;
+      }
       window.removeEventListener('resize', handler);
     };
-  }, []);
+  }, [_size]);
+
+  const clockWidth = useMemo(() => {
+    switch (size) {
+      case 's': {
+        return {
+          clock: 125,
+          msClock: 25,
+          msTop: 150,
+          width: window.innerWidth,
+        };
+      }
+      case 'm': {
+        return {
+          width: window.innerWidth,
+          clock: 175,
+          msClock: 40,
+          msTop: 200,
+        };
+      }
+      case 'l': {
+        return {
+          width: window.innerWidth,
+          clock: 250,
+          msClock: 50,
+          msTop: 300,
+        };
+      }
+      default: {
+        return {
+          width: window.innerWidth,
+          clock: 250,
+          msClock: 50,
+          msTop: 300,
+        };
+      }
+    }
+  }, [size]);
   
   return (
-    <div className="bg-black p-4 rounded-[64px]">
+    <div className="bg-black p-4 rounded-[64px]" style={{ width: clockWidth.clock * 2 + 32 }}>
       <div
         className="relative w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] md:w-[500px] md:h-[500px] rounded-full bg-white"
-        style={{ boxShadow: "inset 0px 0px 15px 0 hsl(var(--foreground) /.9)" }}
+        style={{ boxShadow: "inset 0px 0px 15px 0 hsl(var(--foreground) /.9)", width: clockWidth.clock * 2, height: clockWidth.clock * 2 }}
       >
         <TimeScale radius={clockWidth.clock} />
         <ClockNeedle hourAngle={hourAngle} minAngle={minAngle} secAngle={secAngle} radius={clockWidth.clock} />
-        <div
+        {needMs ? <div
           className="absolute w-[50px] h-[50px] sm:w-[80px] sm:h-[80px] md:w-[100px] md:h-[100px] rounded-full box-border bg-slate-300"
           style={{
             left: "50%",
@@ -144,7 +154,7 @@ export function Clock() {
         >
           <MsTimeScale radius={clockWidth.msClock} />
           <MsClockNeedle radius={clockWidth.msClock} mSecAngle={mSecAngle} />
-        </div>
+        </div> : null}
       </div>
     </div>
   );

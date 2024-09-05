@@ -21,6 +21,11 @@ const HEIGHT_RADIUS_MAP: Record<number, number> = {
   175: 36,
   125: 30
 }
+const TEXT_CLASS_RADIUS_MAP: Record<number, string> = {
+  250: 'text-4xl',
+  175: 'text-3xl',
+  125: 'text-2xl',
+}
 
 export function TimeScale(props: IProps) {
   const { radius } = props;
@@ -55,7 +60,7 @@ export function TimeScale(props: IProps) {
           );
         }
 
-        return <div className="text-black text-2xl sm:text-3xl md:text-4xl" key={index}>{child}</div>;
+        return <div className={`text-black ${TEXT_CLASS_RADIUS_MAP[radius]}`} key={index}>{child}</div>;
       })}
     </div>
   );

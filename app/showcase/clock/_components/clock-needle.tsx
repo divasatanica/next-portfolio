@@ -65,7 +65,7 @@ export function ClockNeedle(props: IProps) {
         style={{
           height: radius * 2 * 0.6,
           left: 0,
-          top: `-${radius * 0.6 - 5}px`,
+          top: `-${radius * 0.6 - 3}px`,
           background:
             "linear-gradient(0deg, transparent 0%, transparent 50%, #4278f7 50%)",
           transform: `rotate(${hourAngle}deg)`,
