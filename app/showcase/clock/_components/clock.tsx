@@ -3,6 +3,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { TimeScale } from "./number";
 import { MsTimeScale } from "./ms-number";
 import { ClockNeedle, MsClockNeedle } from "./clock-needle";
+import { isServerEnv } from "@/lib/utils";
 
 const throttle = (fn: (...params: any[]) => any, delay: number) => {
   let lastTriggered = -1;
@@ -105,12 +106,12 @@ export function Clock(props: IProps) {
           clock: 125,
           msClock: 25,
           msTop: 150,
-          width: window.innerWidth,
+          width: isServerEnv() ? 0 : window.innerWidth,
         };
       }
       case 'm': {
         return {
-          width: window.innerWidth,
+          width: isServerEnv() ? 0 : window.innerWidth,
           clock: 175,
           msClock: 40,
           msTop: 200,
@@ -118,7 +119,7 @@ export function Clock(props: IProps) {
       }
       case 'l': {
         return {
-          width: window.innerWidth,
+          width: isServerEnv() ? 0 : window.innerWidth,
           clock: 250,
           msClock: 50,
           msTop: 300,
@@ -126,7 +127,7 @@ export function Clock(props: IProps) {
       }
       default: {
         return {
-          width: window.innerWidth,
+          width: isServerEnv() ? 0 : window.innerWidth,
           clock: 250,
           msClock: 50,
           msTop: 300,
