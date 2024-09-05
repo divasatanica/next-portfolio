@@ -47,7 +47,7 @@ export function MsTimeScale(props: IProps) {
           );
         }
 
-        return <div className="text-black text-md" key={index}>{child}</div>;
+        return <div className="text-black text-sm sm:text-md" key={index}>{child}</div>;
       })}
     </div>
   );

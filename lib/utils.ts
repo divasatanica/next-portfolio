@@ -15,6 +15,10 @@ export function formateDate(rawDate: string) {
   return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
 }
 
+export function isServerEnv() {
+  return typeof window === 'undefined';
+}
+
 export async function request(...params: Parameters<typeof fetch>) {
   let res: Response | null = null;
   try {
