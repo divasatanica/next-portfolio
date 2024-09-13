@@ -23,8 +23,9 @@ export function MsTimeScale(props: IProps) {
         const angle = angles[index];
         const _top = radius - radius * Math.cos(angle);
         const heightBiasBase = HEIGHT / 2;
-        const topBias = heightBiasBase + heightBiasBase * Math.sin(angle - Math.PI / 2);
-        const top = (_top - radius >= -1) ? _top - topBias : _top;
+        const topBias =
+          heightBiasBase + heightBiasBase * Math.sin(angle - Math.PI / 2);
+        const top = _top - radius >= -1 ? _top - topBias : _top;
         if (scale.length === 1) {
           child = (
             <div
@@ -47,7 +48,11 @@ export function MsTimeScale(props: IProps) {
           );
         }
 
-        return <div className="text-black text-sm sm:text-md" key={index}>{child}</div>;
+        return (
+          <div className="text-black text-sm sm:text-md" key={index}>
+            {child}
+          </div>
+        );
       })}
     </div>
   );

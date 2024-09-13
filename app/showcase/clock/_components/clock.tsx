@@ -7,7 +7,7 @@ import { isServerEnv } from "@/lib/utils";
 
 const throttle = (fn: (...params: any[]) => any, delay: number) => {
   let lastTriggered = -1;
-  return function(...params: Parameters<typeof fn>) {
+  return function (...params: Parameters<typeof fn>) {
     const now = Date.now();
 
     if (now - lastTriggered < delay) {
@@ -15,10 +15,10 @@ const throttle = (fn: (...params: any[]) => any, delay: number) => {
     }
 
     fn(...params);
-  }
+  };
 };
 
-type ClockSize = 's' | 'm' | 'l';
+type ClockSize = "s" | "m" | "l";
 
 interface IProps {
   needMs?: boolean;
@@ -32,7 +32,7 @@ export function Clock(props: IProps) {
   const [sec, setSec] = useState<number>(0);
   const [mSec, setMSec] = useState<number>(0);
   const rafRef = useRef<number>(0);
-  const [size, setSize] = useState<ClockSize>(_size || 'l');
+  const [size, setSize] = useState<ClockSize>(_size || "l");
 
   const hourAngle = useMemo(() => {
     const _hour = hour % 12;
@@ -74,34 +74,34 @@ export function Clock(props: IProps) {
     const handler = throttle(() => {
       switch (true) {
         case window.innerWidth <= 640: {
-          setSize('s');
+          setSize("s");
           break;
         }
         case window.innerWidth <= 768: {
-          setSize('m');
+          setSize("m");
           break;
         }
         default: {
-          setSize('l');
+          setSize("l");
           break;
         }
       }
     }, 100);
 
-    window.addEventListener('resize', handler);
+    window.addEventListener("resize", handler);
     handler();
 
     return () => {
       if (_size != null) {
         return;
       }
-      window.removeEventListener('resize', handler);
+      window.removeEventListener("resize", handler);
     };
   }, [_size]);
 
   const clockWidth = useMemo(() => {
     switch (size) {
-      case 's': {
+      case "s": {
         return {
           clock: 125,
           msClock: 25,
@@ -109,7 +109,7 @@ export function Clock(props: IProps) {
           width: isServerEnv() ? 0 : window.innerWidth,
         };
       }
-      case 'm': {
+      case "m": {
         return {
           width: isServerEnv() ? 0 : window.innerWidth,
           clock: 175,
@@ -117,7 +117,7 @@ export function Clock(props: IProps) {
           msTop: 200,
         };
       }
-      case 'l': {
+      case "l": {
         return {
           width: isServerEnv() ? 0 : window.innerWidth,
           clock: 250,
@@ -135,27 +135,41 @@ export function Clock(props: IProps) {
       }
     }
   }, [size]);
-  
+
   return (
-    <div className="bg-black p-4 rounded-[64px]" style={{ width: clockWidth.clock * 2 + 32 }}>
+    <div
+      className="bg-black p-4 rounded-[64px]"
+      style={{ width: clockWidth.clock * 2 + 32 }}
+    >
       <div
         className="relative w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] md:w-[500px] md:h-[500px] rounded-full bg-white"
-        style={{ boxShadow: "inset 0px 0px 15px 0 hsl(var(--foreground) /.9)", width: clockWidth.clock * 2, height: clockWidth.clock * 2 }}
+        style={{
+          boxShadow: "inset 0px 0px 15px 0 hsl(var(--foreground) /.9)",
+          width: clockWidth.clock * 2,
+          height: clockWidth.clock * 2,
+        }}
       >
         <TimeScale radius={clockWidth.clock} />
-        <ClockNeedle hourAngle={hourAngle} minAngle={minAngle} secAngle={secAngle} radius={clockWidth.clock} />
-        {needMs ? <div
-          className="absolute w-[50px] h-[50px] sm:w-[80px] sm:h-[80px] md:w-[100px] md:h-[100px] rounded-full box-border bg-slate-300"
-          style={{
-            left: "50%",
-            transform: "translateX(-50%)",
-            top: clockWidth.msTop,
-            boxShadow: "inset 0px 0px 10px 0 hsl(var(--foreground) /.2)",
-          }}
-        >
-          <MsTimeScale radius={clockWidth.msClock} />
-          <MsClockNeedle radius={clockWidth.msClock} mSecAngle={mSecAngle} />
-        </div> : null}
+        <ClockNeedle
+          hourAngle={hourAngle}
+          minAngle={minAngle}
+          secAngle={secAngle}
+          radius={clockWidth.clock}
+        />
+        {needMs ? (
+          <div
+            className="absolute w-[50px] h-[50px] sm:w-[80px] sm:h-[80px] md:w-[100px] md:h-[100px] rounded-full box-border bg-slate-300"
+            style={{
+              left: "50%",
+              transform: "translateX(-50%)",
+              top: clockWidth.msTop,
+              boxShadow: "inset 0px 0px 10px 0 hsl(var(--foreground) /.2)",
+            }}
+          >
+            <MsTimeScale radius={clockWidth.msClock} />
+            <MsClockNeedle radius={clockWidth.msClock} mSecAngle={mSecAngle} />
+          </div>
+        ) : null}
       </div>
     </div>
   );
