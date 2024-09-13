@@ -19,13 +19,13 @@ interface IProps {
 const HEIGHT_RADIUS_MAP: Record<number, number> = {
   250: 40,
   175: 36,
-  125: 30
-}
+  125: 30,
+};
 const TEXT_CLASS_RADIUS_MAP: Record<number, string> = {
-  250: 'text-4xl',
-  175: 'text-3xl',
-  125: 'text-2xl',
-}
+  250: "text-4xl",
+  175: "text-3xl",
+  125: "text-2xl",
+};
 
 export function TimeScale(props: IProps) {
   const { radius } = props;
@@ -36,8 +36,9 @@ export function TimeScale(props: IProps) {
         const angle = angles[index];
         const _top = radius - radius * Math.cos(angle);
         const heightBiasBase = (HEIGHT_RADIUS_MAP[radius] || 32) / 2;
-        const topBias = heightBiasBase + heightBiasBase * Math.sin(angle - Math.PI / 2);
-        const top = (_top - radius >= -1) ? _top - topBias : _top;
+        const topBias =
+          heightBiasBase + heightBiasBase * Math.sin(angle - Math.PI / 2);
+        const top = index >= 3 ? _top - topBias : _top - topBias;
         if (scale.length === 1) {
           child = (
             <div
@@ -48,7 +49,7 @@ export function TimeScale(props: IProps) {
             </div>
           );
         } else {
-          const width = 2 * radius * Math.sin(angle) - 32;
+          const width = 2 * radius * Math.sin(angle) - 40 * Math.sin(angle);
           child = (
             <div
               className="absolute flex justify-between"
@@ -60,7 +61,14 @@ export function TimeScale(props: IProps) {
           );
         }
 
-        return <div className={`text-black ${TEXT_CLASS_RADIUS_MAP[radius]}`} key={index}>{child}</div>;
+        return (
+          <div
+            className={`text-black ${TEXT_CLASS_RADIUS_MAP[radius]}`}
+            key={index}
+          >
+            {child}
+          </div>
+        );
       })}
     </div>
   );
